@@ -18,3 +18,10 @@ Tool to aid manually censoring parts of images, created at the request of [this]
 - - **The image is overwritten immediately without creating any backup.**
 
 -  Use the mouse wheel to advance to the next (or previous) image.
+
+## Todo
+
+- [x] Resizable window
+- [x] Support JPEG
+- [ ] Zoom
+- [x] Undo
