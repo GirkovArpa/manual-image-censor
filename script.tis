@@ -114,41 +114,25 @@ function save() {
     for (var rectangle in rectangles) {
       const ratio = fileDims.height.toFloat() / displayedDims.height.toFloat();
       debug info: ratio;
+
+      const spaceLeft = ((canvasDims.width - displayedDims.width) / 2.0) * ratio;
+      const spaceTop = ((canvasDims.height - displayedDims.height) / 2.0) * ratio;
+      debug info: space;
+
       const correctedRect = [
-        ratio * rectangle[0],
-        ratio * rectangle[1],
+        ratio * rectangle[0] - spaceLeft,
+        ratio * rectangle[1] - spaceTop,
         ratio * rectangle[2],
         ratio * rectangle[3]
       ];
+
+      debug info: rectangle;
+      debug info: correctedRect;
+
       gfx.rectangle(...correctedRect);
     }
   }); 
   newImage.toBytes().save("z.png");
-  /*
-  $(img).style.set {
-    "foreground-repeat": "no-repeat";
-    "foreground-position": "50% 50%";
-    "foreground-size": "100%";
-    "cursor": crosshair;
-    "max-width": "99999";
-    "max-height": "99999";
-  }
-
-  $(.row-img).style.set {
-    "foreground-repeat": "no-repeat";
-    "foreground-position": "50% 50%";
-    "foreground-size": "100%";
-    "cursor": crosshair;
-    "max-width": "99999";
-    "max-height": "99999";
-  }
-
-  $(img).refresh();*/
-  //const (w, h) = $(img).box(#dimension);
-  //const image = new Image(w, h, $(img));
-  //const bytes = image.toBytes();
-  //bytes.save($(img).@#src);
-  
 }
 
 $(img) << event mouseleave (evt) {
