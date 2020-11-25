@@ -41,12 +41,14 @@ $(#open-folder) << event click {
 }
 
 $(#next) << event click {
+  save();
   $(img).@#src = filenames[++index % filenames.length];
   rectangles = [];
   $(img).refresh();
 }
 
 $(#prev) << event click {
+  save();
   index = mod(index - 1, filenames.length);
   $(img).@#src = filenames[index];
   rectangles = [];
