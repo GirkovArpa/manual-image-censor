@@ -19,9 +19,7 @@ body {
   flow: vertical;
   background: #eee;
   border-spacing: 5dip;
-  padding-left: 5dip;
-  padding-right: 5dip;
-  margin-bottom: -0.5em;
+  padding: 5dip;
 }
 
 div.row {
@@ -29,6 +27,14 @@ div.row {
   flow: horizontal;
   justify-content: space-between;
   text-align: center;
+}
+
+.row-img {
+  height: *;
+}
+
+div.buttons {
+  height: max-content;
 }
 
 div.filler {
@@ -41,16 +47,18 @@ button {
 }
 
 button#open {
-  width: 50%;
+  width: calc(50vw - 10dip);
 }
 
 .img {
-  width: 500dip;
-  height: 400dip;
+  size: *;
 }
 
 img {
-  max-width: 500dip;
-  max-height: 400dip;
+  foreground-repeat: stretch keep-ratio;
+  foreground-position: 50% 50%;
+  foreground-size: contain;
   cursor: crosshair;
+  max-width: calc(100vw - 10dip);
+  max-height: calc(100vh - (39dip + 2em));
 }

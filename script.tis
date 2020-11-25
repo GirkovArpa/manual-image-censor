@@ -1,4 +1,4 @@
-const DEBUGGING = false;
+const DEBUGGING = true;
 
 DEBUGGING && view.connectToInspector && view.connectToInspector(rootElement, inspectorIpAddress);
 
@@ -27,7 +27,7 @@ $(#open) << event click {
   if (! folder) return;
   $(#prev).state#disabled = false;
   $(#next).state#disabled = false;
-  const filter = "/**.png";
+  const filter = "/**.jpg";
   filenames = [];
   index = -1;
   const result = System.scanFiles(folder + filter, function(filename, attributes) {
