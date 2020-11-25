@@ -80,6 +80,8 @@ $(img) << event mousemove (evt) {
 }
 
 function save() {
+  if (! rectangles.length) return; // don't waste time saving image if no changes were made
+
   view.windowCaption = "Manual Image Censor (Saving ...)";
 
   const fileDims = {
