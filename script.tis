@@ -36,6 +36,8 @@ $(#open-folder) << event click {
   });
   $(img).@#src = filenames[++index];
   $(img).refresh();
+
+  $(#undo).state#disabled = false;
 }
 
 $(#next) << event click {
