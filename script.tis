@@ -132,7 +132,7 @@ function save() {
       gfx.rectangle(...correctedRect);
     }
   }); 
-  newImage.toBytes().save("z.png");
+  newImage.toBytes().save($(img).@#src);
 }
 
 $(#undo) << event click {
