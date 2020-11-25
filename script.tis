@@ -11,7 +11,7 @@ $(#about) << event click {
 
 $(#instructions) << event click {
   view.msgbox(#information,
-    "Click & drag to censor.  Scroll the mouse wheel to advance to another image.",
+    "Click & drag to censor.  Scroll the mouse wheel to save changes & advance to another image.",
     "Instructions"
   );
 }

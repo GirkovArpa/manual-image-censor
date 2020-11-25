@@ -15,7 +15,7 @@ Tool to aid manually censoring parts of images, created at the request of [this]
 3. Open the folder containing the images (must be `.jpg` format).
 
 -  Click and drag to draw a black rectangle on the image.  
-- - **The image is overwritten immediately without creating any backup.**
+- - **The image (with changes) is overwritten upon advancing to another image.**
 
 -  Use the mouse wheel to advance to the next (or previous) image.
 
