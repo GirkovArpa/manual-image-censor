@@ -21,7 +21,7 @@ include "modulus.tis";
 var filenames = [];
 var index = -1;
 
-$(#open) << event click {
+$(#open-folder) << event click {
   const home = System.home();
   const folder = view.selectFolder("Select a folder containing images", home);
   if (! folder) return;
@@ -133,6 +133,12 @@ function save() {
     }
   }); 
   newImage.toBytes().save("z.png");
+}
+
+$(#undo) << event click {
+  if (rectangles.length) rectangles.length--;
+  save();
+  return true;
 }
 
 $(img) << event mouseleave (evt) {

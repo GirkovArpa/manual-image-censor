@@ -46,10 +46,6 @@ button {
   height: 2em;
 }
 
-button#open {
-  width: calc(50vw - 10dip);
-}
-
 .img {
   size: *;
 }
