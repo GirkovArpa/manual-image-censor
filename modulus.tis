@@ -1,0 +1,5 @@
+// https://stackoverflow.com/a/13163436/13378247
+function mod(n, m) {
+    const remain = n % m;
+    return remain >= 0 ? remain : remain + m;
+};

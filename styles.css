@@ -1,0 +1,56 @@
+* {
+  overflow: none;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  size: *;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  size: *;
+  font: system;
+  flow: vertical;
+  background: #eee;
+  border-spacing: 5dip;
+  padding-left: 5dip;
+  padding-right: 5dip;
+  margin-bottom: -0.5em;
+}
+
+div.row {
+  border-spacing: 5dip;
+  flow: horizontal;
+  justify-content: space-between;
+  text-align: center;
+}
+
+div.filler {
+  width: *;
+}
+
+button {
+  width: *;
+  height: 2em;
+}
+
+button#open {
+  width: 50%;
+}
+
+.img {
+  width: 500dip;
+  height: 400dip;
+}
+
+img {
+  max-width: 500dip;
+  max-height: 400dip;
+  cursor: crosshair;
+}

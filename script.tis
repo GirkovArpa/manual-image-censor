@@ -1,0 +1,110 @@
+const DEBUGGING = true;
+
+DEBUGGING && view.connectToInspector && view.connectToInspector(rootElement, inspectorIpAddress);
+
+$(#about) << event click {
+  view.msgbox(#information,
+    "This application was written by GirkovArpa.\nIt uses Sciter Engine (https://sciter.com),\ncopyright © Terra Informatica Software, Inc.",
+    "About"
+  );
+}
+
+$(#instructions) << event click {
+  view.msgbox(#information,
+    "Click & drag to censor.  Scroll the mouse wheel to advance to another image.",
+    "Instructions"
+  );
+}
+
+include "modulus.tis";
+
+var filenames = [];
+var index = -1;
+
+$(#open) << event click {
+  const home = System.home();
+  const folder = view.selectFolder("Select a folder containing images", home);
+  if (! folder) return;
+  $(#prev).state#disabled = false;
+  $(#next).state#disabled = false;
+  const filter = "/**.png";
+  filenames = [];
+  index = -1;
+  const result = System.scanFiles(folder + filter, function(filename, attributes) {
+    filenames.push(folder + "/" + filename);
+    return true;
+  });
+  $(img).@#src = filenames[++index];
+  $(img).refresh();
+}
+
+$(#next) << event click {
+  $(img).@#src = filenames[++index % filenames.length];
+  rectangles = [];
+  $(img).refresh();
+}
+
+$(#prev) << event click {
+  index = mod(index - 1, filenames.length);
+  $(img).@#src = filenames[index];
+  rectangles = [];
+  $(img).refresh();
+}
+
+var rectangles = [];
+
+$(img).paintOutline = function(gfx) {
+  gfx.fillColor(color(0, 0, 0));
+  for (var rectangle in rectangles) {
+    gfx.rectangle(...rectangle);
+  }
+}
+
+var dragging = false;
+
+$(img) << event mousedown (evt) {
+  const x = evt.x.toFloat();
+  const y = evt.y.toFloat();
+  rectangles.push([x, y, x, y]);
+  dragging = true;
+}
+
+$(img) << event mousemove (evt) {
+  if (! dragging) return;
+  const rect = rectangles.last;
+  rect[2] = evt.x.toFloat() - rect[0];
+  rect[3] = evt.y.toFloat() - rect[1];
+  this.refresh();
+}
+
+function save() {
+  const (w, h) = $(img).box(#dimension);
+  const image = new Image(w, h, $(img));
+  const bytes = image.toBytes();
+  bytes.save($(img).@#src);
+}
+
+$(img) << event mouseleave (evt) {
+  if (! dragging) return;
+  dragging = false;
+  save();
+}
+
+$(img) << event mouseup (evt) {
+  if (! dragging) return;
+  dragging = false;
+  save();
+}
+
+self.onMouse = function(evt) {
+  if (evt.type == Event.MOUSE_WHEEL) {
+    const delta = evt.wheelDelta;
+    if (delta == -1.0 || delta == 1.0)  {
+      index = mod(index + delta.toInteger(), filenames.length);
+      $(img).@#src = filenames[index];
+      rectangles = [];
+      $(img).refresh();
+      return true;
+    }
+  }
+}
