@@ -78,10 +78,77 @@ $(img) << event mousemove (evt) {
 }
 
 function save() {
+
+  const fileDims = {
+    width: $(img).style.foregroundImageWidth,
+    height: $(img).style.foregroundImageHeight
+  };
+  debug info: fileDims;
+
   const (w, h) = $(img).box(#dimension);
-  const image = new Image(w, h, $(img));
-  const bytes = image.toBytes();
-  bytes.save($(img).@#src);
+  const canvasDims = {
+    width: w,
+    height: h
+  };
+  debug info: canvasDims;
+
+  const ratio = fileDims.width.toFloat() / fileDims.height.toFloat();
+
+
+  const displayedDims = { width: undefined, height: undefined };
+  if (canvasDims.height < canvasDims.width) {
+    displayedDims.height = canvasDims.height;
+    displayedDims.width = ratio * canvasDims.height.toFloat();
+  } else {
+    displayedDims.width = canvasDims.width;
+    displayedDims.height = ratio * canvasDims.width.toFloat();
+  }
+  debug info: displayedDims;
+
+  const originalImage = Image.fromBytes(Bytes.load($(img).@#src));
+  const newImage  = new Image(fileDims.width, fileDims.height, function(gfx) {
+    gfx
+      .drawImage(originalImage, 0.0, 0.0)
+      .fillColor(color(0, 0, 0));
+
+    for (var rectangle in rectangles) {
+      const ratio = fileDims.height.toFloat() / displayedDims.height.toFloat();
+      debug info: ratio;
+      const correctedRect = [
+        ratio * rectangle[0],
+        ratio * rectangle[1],
+        ratio * rectangle[2],
+        ratio * rectangle[3]
+      ];
+      gfx.rectangle(...correctedRect);
+    }
+  }); 
+  newImage.toBytes().save("z.png");
+  /*
+  $(img).style.set {
+    "foreground-repeat": "no-repeat";
+    "foreground-position": "50% 50%";
+    "foreground-size": "100%";
+    "cursor": crosshair;
+    "max-width": "99999";
+    "max-height": "99999";
+  }
+
+  $(.row-img).style.set {
+    "foreground-repeat": "no-repeat";
+    "foreground-position": "50% 50%";
+    "foreground-size": "100%";
+    "cursor": crosshair;
+    "max-width": "99999";
+    "max-height": "99999";
+  }
+
+  $(img).refresh();*/
+  //const (w, h) = $(img).box(#dimension);
+  //const image = new Image(w, h, $(img));
+  //const bytes = image.toBytes();
+  //bytes.save($(img).@#src);
+  
 }
 
 $(img) << event mouseleave (evt) {
