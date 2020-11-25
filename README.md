@@ -16,6 +16,6 @@ Tool to aid manually censoring parts of images, created at the request of [this]
 
 -  Click and drag to draw a black rectangle on the image.  
 - - **The image is overwritten immediately without creating any backup.**
-- - **The image size is NOT preserved.**
+- - **The image dimensions are NOT preserved.**
 
 -  Use the mouse wheel to advance to the next (or previous) image.
