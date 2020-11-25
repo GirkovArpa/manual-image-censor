@@ -80,7 +80,6 @@ $(img) << event mousemove (evt) {
 }
 
 function save() {
-
   view.windowCaption = "Manual Image Censor (Saving ...)";
 
   const fileDims = {
@@ -96,6 +95,7 @@ function save() {
 
   const ratio = fileDims.width.toFloat() / fileDims.height.toFloat();
 
+  const originalImage = Image.fromBytes(Bytes.load($(img).@#src));
 
   const displayedDims = { width: undefined, height: undefined };
   if (canvasDims.height < canvasDims.width) {
@@ -106,7 +106,6 @@ function save() {
     displayedDims.height = ratio * canvasDims.width.toFloat();
   }
 
-  const originalImage = Image.fromBytes(Bytes.load($(img).@#src));
   const newImage  = new Image(fileDims.width, fileDims.height, function(gfx) {
     gfx
       .drawImage(originalImage, 0.0, 0.0)
@@ -136,7 +135,7 @@ function save() {
 $(#undo) << event click {
   if (rectangles.length) {
     rectangles.length--;
-    save();
+    $(img).refresh();
   }
   return true;
 }
@@ -144,19 +143,18 @@ $(#undo) << event click {
 $(img) << event mouseleave (evt) {
   if (! dragging) return;
   dragging = false;
-  save();
 }
 
 $(img) << event mouseup (evt) {
   if (! dragging) return;
   dragging = false;
-  save();
 }
 
 self.onMouse = function(evt) {
   if (evt.type == Event.MOUSE_WHEEL) {
     const delta = evt.wheelDelta;
     if (delta == -1.0 || delta == 1.0)  {
+      save();
       index = mod(index + delta.toInteger(), filenames.length);
       $(img).@#src = filenames[index];
       rectangles = [];
