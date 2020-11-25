@@ -81,18 +81,18 @@ $(img) << event mousemove (evt) {
 
 function save() {
 
+  view.windowCaption = "Manual Image Censor (Saving ...)";
+
   const fileDims = {
     width: $(img).style.foregroundImageWidth,
     height: $(img).style.foregroundImageHeight
   };
-  debug info: fileDims;
 
   const (w, h) = $(img).box(#dimension);
   const canvasDims = {
     width: w,
     height: h
   };
-  debug info: canvasDims;
 
   const ratio = fileDims.width.toFloat() / fileDims.height.toFloat();
 
@@ -105,7 +105,6 @@ function save() {
     displayedDims.width = canvasDims.width;
     displayedDims.height = ratio * canvasDims.width.toFloat();
   }
-  debug info: displayedDims;
 
   const originalImage = Image.fromBytes(Bytes.load($(img).@#src));
   const newImage  = new Image(fileDims.width, fileDims.height, function(gfx) {
@@ -115,11 +114,9 @@ function save() {
 
     for (var rectangle in rectangles) {
       const ratio = fileDims.height.toFloat() / displayedDims.height.toFloat();
-      debug info: ratio;
 
       const spaceLeft = ((canvasDims.width - displayedDims.width) / 2.0) * ratio;
       const spaceTop = ((canvasDims.height - displayedDims.height) / 2.0) * ratio;
-      debug info: space;
 
       const correctedRect = [
         ratio * rectangle[0] - spaceLeft,
@@ -128,18 +125,19 @@ function save() {
         ratio * rectangle[3]
       ];
 
-      debug info: rectangle;
-      debug info: correctedRect;
-
       gfx.rectangle(...correctedRect);
     }
   }); 
   newImage.toBytes().save($(img).@#src);
+
+  view.windowCaption = "Manual Image Censor";
 }
 
 $(#undo) << event click {
-  if (rectangles.length) rectangles.length--;
-  save();
+  if (rectangles.length) {
+    rectangles.length--;
+    save();
+  }
   return true;
 }
 
