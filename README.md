@@ -16,13 +16,14 @@ Tool to aid manually censoring parts of images, created at the request of [this]
 
 -  Click and drag to draw a black rectangle on the image.  
 - - **The image (with changes) is overwritten upon advancing to another image.**
+- - **NO backup is created.**
 
 -  Use the mouse wheel to advance to the next (or previous) image.
 
 ## Todo
 
 - [x] Resizable window
-- [x] Support JPEG
+- [x] Support `.jpg` and `.jpeg`
 - [ ] Zoom
 - [x] Undo
 - [x] Arrow key navigation
