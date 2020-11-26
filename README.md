@@ -25,4 +25,4 @@ Tool to aid manually censoring parts of images, created at the request of [this]
 - [x] Support JPEG
 - [ ] Zoom
 - [x] Undo
-- [ ] Arrow key navigation
+- [x] Arrow key navigation

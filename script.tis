@@ -1,4 +1,4 @@
-const DEBUGGING = false;
+const DEBUGGING = true;
 
 DEBUGGING && view.connectToInspector && view.connectToInspector(rootElement, inspectorIpAddress);
 
@@ -11,7 +11,7 @@ $(#about) << event click {
 
 $(#instructions) << event click {
   view.msgbox(#information,
-    "Click & drag to censor.  Scroll the mouse wheel to save changes & advance to another image.",
+    "Click & drag to draw a black rectangle.\nNavigate images with arrow keys or mouse wheel.",
     "Instructions"
   );
 }
@@ -20,6 +20,7 @@ include "modulus.tis";
 
 var filenames = [];
 var index = -1;
+var navigationAllowed = false;
 
 $(#open-folder) << event click {
   const home = System.home();
@@ -38,6 +39,7 @@ $(#open-folder) << event click {
   $(img).refresh();
 
   $(#undo).state#disabled = false;
+  navigationAllowed = true;
 }
 
 $(#next).on("click", async function() {
@@ -178,3 +180,31 @@ self.onMouse = function(evt) {
     }
   }
 }
+
+async function navigateImage(_this, direction) {
+  if (! navigationAllowed) return;
+  _this.style.set { cursor: "wait" };
+  await save();
+  _this.style.set { cursor: "auto" };
+  index = mod(index + direction, filenames.length);
+  $(img).@#src = filenames[index];
+  rectangles = [];
+  $(img).refresh();
+}
+
+$(ul).on("keydown", function(evt) {
+  if (evt.keyCode == Event.VK_LEFT) {
+    navigateImage(this, -1);
+  } else if (evt.keyCode == Event.VK_RIGHT) {
+    navigateImage(this, 1);
+  } 
+  return true;
+});
+
+$(body).on("keydown", function(evt) {
+  if (evt.keyCode == Event.VK_LEFT) {
+    navigateImage(this, -1);
+  } else if (evt.keyCode == Event.VK_RIGHT) {
+    navigateImage(this, 1);
+  } 
+});
