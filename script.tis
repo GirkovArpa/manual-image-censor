@@ -41,14 +41,18 @@ $(#open-folder) << event click {
 }
 
 $(#next).on("click", async function() {
+  this.style.set { cursor: "wait" };
   await save();
+  this.style.set { cursor: "auto" };
   $(img).@#src = filenames[++index % filenames.length];
   rectangles = [];
   $(img).refresh();
 })
 
 $(#prev).on("click", async function() {
+  this.style.set { cursor: "wait" };
   await save();
+  this.style.set { cursor: "auto" };
   index = mod(index - 1, filenames.length);
   $(img).@#src = filenames[index];
   rectangles = [];
@@ -86,7 +90,7 @@ async function save() {
 
   $(img).style.set { cursor: "wait" };
   await promise(function(resolve, reject) {
-    self.timer(1ms, resolve);
+    self.timer(1ms, resolve); // give cursor time to update
   });
 
   view.windowCaption = "Manual Image Censor (Saving ...)";
