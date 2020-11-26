@@ -1,4 +1,4 @@
-# Manual Image Censor
+# Manual Image Censor <img src="icon.svg" width="32" height="32"/>
 
 Tool to aid manually censoring parts of images, created at the request of [this](https://old.reddit.com/r/software/comments/k06117/looking_for_a_program_to_easily_draw_black_boxes/) Reddit thread.
 
