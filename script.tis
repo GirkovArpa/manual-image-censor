@@ -40,20 +40,20 @@ $(#open-folder) << event click {
   $(#undo).state#disabled = false;
 }
 
-$(#next) << event click {
-  save();
+$(#next).on("click", async function() {
+  await save();
   $(img).@#src = filenames[++index % filenames.length];
   rectangles = [];
   $(img).refresh();
-}
+})
 
-$(#prev) << event click {
-  save();
+$(#prev).on("click", async function() {
+  await save();
   index = mod(index - 1, filenames.length);
   $(img).@#src = filenames[index];
   rectangles = [];
   $(img).refresh();
-}
+});
 
 var rectangles = [];
 
@@ -81,8 +81,13 @@ $(img) << event mousemove (evt) {
   this.refresh();
 }
 
-function save() {
+async function save() {
   if (! rectangles.length) return; // don't waste time saving image if no changes were made
+
+  $(img).style.set { cursor: "wait" };
+  await promise(function(resolve, reject) {
+    self.timer(1ms, resolve);
+  });
 
   view.windowCaption = "Manual Image Censor (Saving ...)";
 
@@ -132,7 +137,7 @@ function save() {
     }
   }); 
   newImage.toBytes().save($(img).@#src);
-
+  $(img).style.set { cursor: "crosshair" };
   view.windowCaption = "Manual Image Censor";
 }
 
@@ -158,11 +163,13 @@ self.onMouse = function(evt) {
   if (evt.type == Event.MOUSE_WHEEL) {
     const delta = evt.wheelDelta;
     if (delta == -1.0 || delta == 1.0)  {
-      save();
-      index = mod(index + delta.toInteger(), filenames.length);
-      $(img).@#src = filenames[index];
-      rectangles = [];
-      $(img).refresh();
+      (async function() {
+        await save();
+        index = mod(index + delta.toInteger(), filenames.length);
+        $(img).@#src = filenames[index];
+        rectangles = [];
+        $(img).refresh();
+      })();
       return true;
     }
   }
